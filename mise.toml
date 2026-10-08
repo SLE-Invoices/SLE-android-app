@@ -1,0 +1,71 @@
+[tools]
+ktlint = "latest"
+pre-commit = "latest"
+"vfox:mise-plugins/vfox-android-sdk" = "latest"
+"aqua:yashikota/exiftool-go" = { version = "latest", optional = true }
+
+[env]
+ANDROID_HOME = "~/.android/sdk"
+
+[tasks.build]
+run = "./gradlew assembleDebug"
+description = "Build debug APK"
+
+[tasks.build-beta]
+run = "./gradlew assembleBeta"
+description = "Build beta APK"
+
+[tasks.build-release]
+run = "./gradlew assembleRelease"
+description = "Build release APK"
+
+[tasks.install-debug]
+run = "./gradlew installDebug"
+description = "Build + install debug on device"
+
+[tasks.install-beta]
+run = "./gradlew installBeta"
+description = "Build + install beta on device"
+
+[tasks.install-release]
+run = "./gradlew installRelease"
+description = "Build + install release on device"
+
+[tasks.test]
+run = "./gradlew testDebugUnitTest"
+description = "Run unit tests"
+
+[tasks.test-connected]
+run = "./gradlew connectedDebugAndroidTest"
+description = "Run instrumentation tests"
+
+[tasks.lint]
+run = "./gradlew lint"
+description = "Run Android Lint"
+
+[tasks.format]
+run = "ktlint --format"
+description = "Run ktlint format"
+
+[tasks.clean]
+run = "./gradlew clean"
+description = "Clean build artifacts"
+
+[tasks.build-health]
+run = "./gradlew buildHealth"
+description = "Dependency analysis"
+
+[tasks.check]
+depends = ["lint", "test"]
+description = "Full check: lint + tests"
+
+[tasks.full-clean]
+run = "./gradlew clean && rm -rf .gradle"
+description = "Clean everything"
+
+[tasks.setup-hooks]
+run = "pre-commit install && pre-commit install --hook-type commit-msg && mise use pre-commit"
+description = "Install git hooks (pre-commit + commit-msg)"
+
+[hooks]
+postinstall = "mise setup-hooks"
