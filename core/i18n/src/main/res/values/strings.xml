@@ -72,6 +72,13 @@
     <string name="api_timeout">Request timeout</string>
     <string name="api_timeout_desc">Maximum wait time before the request fails (seconds)</string>
 
+    <!-- Connection test -->
+    <string name="test_connection">Test connection</string>
+    <string name="test_connection_desc">Check that the server URL above is reachable from this device</string>
+    <string name="test_connection_testing">Testing…</string>
+    <string name="test_connection_success">Server reachable — %1$s resolves to %2$s (version %3$s)</string>
+    <string name="test_connection_failed">Test failed for %1$s: %2$s</string>
+
     <!-- Settings sections -->
     <string name="general_settings">General</string>
     <string name="debug_settings">Debug</string>

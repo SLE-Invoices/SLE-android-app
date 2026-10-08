@@ -12,7 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.retain.retain
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
@@ -37,10 +37,10 @@ fun MainAppUi() {
 	val backStack = rememberNavBackStack(startScreen)
 
 	/**
-	 * Verrou des réglages : réarmé dès qu'on quitte l'écran des réglages,
-	 * pour redemander le PIN à la prochaine ouverture.
+	 * Settings lock: re-armed as soon as the settings screen is left,
+	 * so the PIN is requested again on the next opening.
 	 */
-	var settingsUnlocked by remember { mutableStateOf(false) }
+	var settingsUnlocked by retain { mutableStateOf(false) }
 
 	val navigator: Navigator = object : Navigator {
 		override fun navigate(screen: NavigationRoute) {

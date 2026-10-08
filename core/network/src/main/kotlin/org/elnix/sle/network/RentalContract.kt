@@ -4,14 +4,14 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * Types de matériel loué, encodés en minuscules pour correspondre au modèle
- * `SkiType` du serveur Python (`sle_server.models`).
+ * Rental equipment types, encoded in lowercase to match the `SkiType`
+ * model of the Python server (`sle_server.models`).
  *
  * Voir `docs/api-contract.md` dans `SLE-server`.
  */
 @Serializable
 enum class SkiType {
-	/** Ski alpine (piste). */
+	/** Alpine skiing (on-piste). */
 	@SerialName("alpine")
 	ALPINE,
 
@@ -19,36 +19,36 @@ enum class SkiType {
 	@SerialName("snowboard")
 	SNOWBOARD,
 
-	/** Ski de fond. */
+	/** Cross-country skiing. */
 	@SerialName("cross_country")
 	CROSS_COUNTRY,
 
-	/** Ski de randonnée. */
+	/** Ski touring. */
 	@SerialName("touring")
 	TOURING,
 
-	/** Raquettes. */
+	/** Snowshoes. */
 	@SerialName("snowshoes")
 	SNOWSHOES
 }
 
 /**
- * Contrat de location saisi par le client sur la tablette du magasin.
+ * Rental contract entered by the customer on the in-store tablet.
  *
- * Cette classe est le miroir exact du modèle Pydantic `sle_server.models.RentalContract` :
- * mêmes noms de champs (``camelCase``), mêmes bornes. Toute modification doit être
- * faite des deux côtés (voir `SLE-server/docs/api-contract.md`).
+ * This class is an exact mirror of the Pydantic model `sle_server.models.RentalContract`:
+ * same field names (``camelCase``), same bounds. Any change must be made on
+ * both sides (see `SLE-server/docs/api-contract.md`).
  *
- * @property renterName Nom du loueur (le magasin).
- * @property customerName Nom du client qui loue le matériel.
- * @property email Adresse e-mail du client, destination du contrat PDF.
- * @property phone Téléphone du client.
- * @property weightKg Poids du client en kilogrammes (utilisé pour le réglage du ski).
- * @property age Âge du client en années.
- * @property skiType Type de matériel loué.
- * @property skiLengthCm Longueur du ski en centimètres.
- * @property dinSetting Réglage DIN (indice de fixation).
- * @property bootSize Pointure de chaussure de ski.
+ * @property renterName Name of the lessor (the shop).
+ * @property customerName Name of the customer renting the equipment.
+ * @property email Customer's e-mail address, the destination of the PDF contract.
+ * @property phone Customer's phone number.
+ * @property weightKg Customer's weight in kilograms (used for the ski setting).
+ * @property age Customer's age in years.
+ * @property skiType Type of rented equipment.
+ * @property skiLengthCm Ski length in centimeters.
+ * @property dinSetting DIN setting (binding index).
+ * @property bootSize Ski boot size.
  */
 @Serializable
 data class RentalContract(
@@ -65,10 +65,10 @@ data class RentalContract(
 )
 
 /**
- * Réponse du serveur après réception d'un contrat.
+ * Server response after receiving a contract.
  *
- * @property id Identifiant unique du contrat côté serveur.
- * @property receivedAt Horodatage ISO-8601 (UTC) de la réception par le serveur.
+ * @property id Unique identifier of the contract on the server side.
+ * @property receivedAt ISO-8601 (UTC) timestamp of receipt by the server.
  */
 @Serializable
 data class RentalContractResponse(

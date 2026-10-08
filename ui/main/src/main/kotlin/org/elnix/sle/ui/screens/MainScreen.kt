@@ -43,11 +43,11 @@ import org.elnix.sle.ui.viewmodel.RentalFeedback
 import org.elnix.sle.ui.viewmodel.RentalField
 
 /**
- * Écran principal : formulaire de location saisi par le client.
+ * Main screen: the rental form filled in by the customer.
  *
- * Le client remplit ses informations, valide, et le contrat part au serveur via
- * [MainViewModel]. En cas de succès le formulaire repart à zéro et une snackbar
- * confirme l'envoi.
+ * The customer enters their details, confirms, and the contract is sent to the server via
+ * [MainViewModel]. On success the form is reset and a snackbar
+ * confirms the submission.
  */
 @Composable
 fun MainScreen() {
@@ -60,8 +60,8 @@ fun MainScreen() {
 		viewModel.feedback.collect { pendingFeedback = it }
 	}
 
-	// Résolution pendant la composition (et non dans la coroutine) : `stringResource`
-	// reste sensible à la configuration (changement de langue à chaud).
+	// Resolved during composition (not in the coroutine): `stringResource`
+	// remains configuration-sensitive (hot language change).
 	val feedbackText = when (val feedback = pendingFeedback) {
 		null -> {
 			null
@@ -200,15 +200,15 @@ fun MainScreen() {
 }
 
 /**
- * Champ de texte du formulaire, avec libellé, clavier adapté et message d'erreur.
+ * Form text field, with a label, adapted keyboard and error message.
  *
- * @param value Texte courant du champ.
- * @param onValueChange Notifié à chaque frappe.
- * @param label Ressource du libellé (`R.string.*`).
- * @param modifier Modificateur (poids dans une [Row] notamment).
- * @param error Ressource du message d'erreur, ou `null` si le champ est valide.
- * @param keyboardType Type de clavier numérique.
- * @param imeAction Action de la touche Entrée du clavier.
+ * @param value Current text of the field.
+ * @param onValueChange Notified on every keystroke.
+ * @param label Label resource (`R.string.*`).
+ * @param modifier Modifier (weight within a [Row] in particular).
+ * @param error Error message resource, or `null` if the field is valid.
+ * @param keyboardType Numeric keyboard type.
+ * @param imeAction Action of the keyboard's Enter key.
  */
 @Composable
 private fun FormTextField(
@@ -237,11 +237,11 @@ private fun FormTextField(
 }
 
 /**
- * Sélecteur du type de ski, présenté en pastilles cliquables (usage tablette).
+ * Ski type selector, presented as clickable pills (tablet use).
  *
- * @param selected Type actuellement choisi.
- * @param onSelect Notifié quand l'utilisateur choisit un autre type.
- * @param modifier Modificateur du conteneur.
+ * @param selected Currently selected type.
+ * @param onSelect Notified when the user picks a different type.
+ * @param modifier Modifier of the container.
  */
 @Composable
 private fun SkiTypeSelector(
@@ -274,7 +274,7 @@ private fun SkiTypeSelector(
 	}
 }
 
-/** Ressource du libellé français/anglais associée à un [SkiType]. */
+/** French/English label resource associated with a [SkiType]. */
 private val SkiType.labelRes: Int
 	get() = when (this) {
 		SkiType.ALPINE -> R.string.ski_type_alpine

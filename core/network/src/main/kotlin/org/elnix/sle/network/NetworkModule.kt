@@ -10,34 +10,34 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
 /**
- * Fournitures Hilt du module réseau.
+ * Hilt providers for the network module.
  *
- * - Un [OkHttpClient] singleton partagé (pool de connexions réutilisé).
- * - La liaison de l'interface [RentalApi] vers [HttpRentalApi].
+ * - A shared singleton [OkHttpClient] (reused connection pool).
+ * - The binding of the [RentalApi] interface to [HttpRentalApi].
  */
 @Module
 @InstallIn(SingletonComponent::class)
 internal abstract class NetworkModule {
 	/**
-	 * Lie l'interface [RentalApi] à son implémentation HTTP [HttpRentalApi].
+	 * Binds the [RentalApi] interface to its HTTP implementation [HttpRentalApi].
 	 *
-	 * C'est cette liaison qui permet à [org.elnix.sle.ui.viewmodel.MainViewModel]
-	 * d'injecter [RentalApi] directement.
+	 * This binding is what allows [org.elnix.sle.ui.viewmodel.MainViewModel]
+	 * to inject [RentalApi] directly.
 	 *
-	 * @param impl Implémentation concrète fournie par Hilt.
-	 * @return Le service d'envoi des contrats.
+	 * @param impl Concrete implementation provided by Hilt.
+	 * @return The contract submission service.
 	 */
 	@Binds
 	abstract fun bindRentalApi(impl: HttpRentalApi): RentalApi
 
 	internal companion object {
 		/**
-		 * Client HTTP partagé par toutes les requêtes.
+		 * HTTP client shared by all requests.
 		 *
-		 * Les timeouts par appel (réglage « délai d'attente ») sont appliqués par
-		 * [HttpRentalApi] sur un client dérivé.
+		 * Per-call timeouts (the "timeout" setting) are applied by
+		 * [HttpRentalApi] on a derived client.
 		 *
-		 * @return Client configuré.
+		 * @return The configured client.
 		 */
 		@Provides
 		@Singleton

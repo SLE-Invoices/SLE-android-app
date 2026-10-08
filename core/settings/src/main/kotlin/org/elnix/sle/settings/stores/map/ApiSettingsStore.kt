@@ -8,19 +8,19 @@ import io.github.elnix90.core.stores.MapSettingsStore
 import org.elnix.sle.i18n.R
 
 /**
- * Réglages du serveur API (contrats de location).
+ * API server settings (rental contracts).
  *
- * Ils sont lus à chaque envoi par `HttpRentalApi`, le manager peut donc corriger
- * l'adresse du serveur sans redémarrer l'application.
+ * They are re-read on every submission by `HttpRentalApi`, so the manager can fix
+ * the server address without restarting the application.
  */
 @SettingsStore
 object ApiSettingsStore : MapSettingsStore() {
 	/**
-	 * Adresse de base du serveur, sans slash final.
+	 * Base URL of the server, without a trailing slash.
 	 *
-	 * La valeur par défaut pointe vers l'hôte de l'émulateur (`10.0.2.2`) pour le
-	 * développement ; sur une tablette du magasin, renseigner l'IP du serveur
-	 * (par exemple `http://192.168.1.10:8000`).
+	 * The default value points at the emulator host (`10.0.2.2`) for
+	 * development; on an in-store tablet, set the server IP
+	 * (for example `http://192.168.1.10:8000`).
 	 */
 	@SettingKey
 	val apiBaseUrl = string(
@@ -29,7 +29,7 @@ object ApiSettingsStore : MapSettingsStore() {
 		description = R.string.api_base_url_desc
 	)
 
-	/** Chemin de l'endpoint qui reçoit les contrats (`POST`). */
+	/** Path of the endpoint that receives the contracts (`POST`). */
 	@SettingKey
 	val apiPath = string(
 		default = "/api/v1/rentals",
@@ -37,7 +37,7 @@ object ApiSettingsStore : MapSettingsStore() {
 		description = R.string.api_path_desc
 	)
 
-	/** Délai maximal d'attente d'une requête, en secondes. */
+	/** Maximum time to wait for a request, in seconds. */
 	@SettingKey
 	val apiTimeoutSeconds = int(
 		default = 10,

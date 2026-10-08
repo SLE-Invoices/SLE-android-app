@@ -19,8 +19,8 @@ import org.elnix.sle.network.SkiType
 import javax.inject.Inject
 
 /**
- * Champs du formulaire de location, utilisés pour rattacher une erreur de validation
- * à un champ affiché dans [org.elnix.sle.ui.screens.MainScreen].
+ * Rental form fields, used to attach a validation error
+ * to a field displayed in [org.elnix.sle.ui.screens.MainScreen].
  */
 enum class RentalField {
 	RENTER_NAME,
@@ -35,25 +35,25 @@ enum class RentalField {
 }
 
 /**
- * État du formulaire de location.
+ * Rental form state.
  *
- * Les valeurs numériques sont gardées en texte : c'est ce que l'utilisateur tape
- * (virgule française acceptée) ; la conversion se fait à la validation avec
+ * Numeric values are kept as text: that is what the user types
+ * (French decimal comma accepted); conversion happens during validation with
  * [RentalLimits].
  *
- * @property renterName Nom du loueur (le magasin).
- * @property customerName Nom du client.
- * @property email E-mail du client.
- * @property phone Téléphone du client.
- * @property weightKg Poids du client en kg (texte saisi).
- * @property age Âge du client (texte saisi).
- * @property skiType Type de ski choisi.
- * @property skiLengthCm Longueur du ski en cm (texte saisi).
- * @property dinSetting Réglage DIN (texte saisi).
- * @property bootSize Pointure de chaussure (texte saisi).
- * @property fieldErrors Erreurs de validation par champ, clées sur [RentalField] et
- * pointant vers une ressource `R.string.error_*`.
- * @property isSubmitting `true` pendant l'envoi au serveur.
+ * @property renterName Name of the renter (the shop).
+ * @property customerName Name of the customer.
+ * @property email Customer's e-mail.
+ * @property phone Customer's phone number.
+ * @property weightKg Customer's weight in kg (entered text).
+ * @property age Customer's age (entered text).
+ * @property skiType Selected ski type.
+ * @property skiLengthCm Ski length in cm (entered text).
+ * @property dinSetting DIN setting (entered text).
+ * @property bootSize Boot size (entered text).
+ * @property fieldErrors Validation errors per field, keyed by [RentalField] and
+ * pointing to an `R.string.error_*` resource.
+ * @property isSubmitting `true` while submitting to the server.
  */
 data class RentalFormState(
 	val renterName: String = "",
@@ -71,17 +71,17 @@ data class RentalFormState(
 )
 
 /**
- * Message à afficher à l'utilisateur après une tentative d'envoi.
+ * Message to show to the user after a submission attempt.
  */
 sealed interface RentalFeedback {
-	/** Le contrat a bien été envoyé : le formulaire est remis à zéro. */
+	/** The contract was sent successfully: the form is reset. */
 	data object Sent : RentalFeedback
 
 	/**
-	 * L'envoi a échoué.
+	 * The submission failed.
 	 *
-	 * @property message Ressource `R.string.*` à afficher.
-	 * @property arg Argument de formatage optionnel (ex: code HTTP).
+	 * @property message `R.string.*` resource to display.
+	 * @property arg Optional formatting argument (e.g. HTTP status code).
 	 */
 	data class Failure(
 		@get:StringRes val message: Int,
@@ -90,10 +90,10 @@ sealed interface RentalFeedback {
 }
 
 /**
- * ViewModel du formulaire de location : validation locale puis envoi au serveur
+ * ViewModel for the rental form: local validation followed by submission to the server
  * via [RentalApi].
  *
- * @property rentalApi Client d'envoi des contrats (Hilt).
+ * @property rentalApi Contract submission client (Hilt).
  */
 @HiltViewModel
 class MainViewModel
@@ -103,35 +103,35 @@ class MainViewModel
 	) : ViewModel() {
 		private val formState = MutableStateFlow(RentalFormState())
 
-		/** État observable du formulaire, lu par l'UI. */
+		/** Observable form state, read by the UI. */
 		val state: StateFlow<RentalFormState> = formState
 
 		private val feedbackChannel = Channel<RentalFeedback>(Channel.BUFFERED)
 
-		/** Événements one-shot (snackbar) : à collecter dans une coroutine UI. */
+		/** One-shot events (snackbar): collect them in a UI coroutine. */
 		val feedback: Flow<RentalFeedback> = feedbackChannel.receiveAsFlow()
 
 		/**
-		 * Applique une modification au formulaire et efface les erreurs affichées,
-		 * puisque la saisie vient de changer.
+		 * Applies a change to the form and clears the displayed errors,
+		 * since the input has just changed.
 		 *
-		 * @param transform Fonction pure qui transforme l'état courant.
+		 * @param transform Pure function that transforms the current state.
 		 */
 		fun update(transform: (RentalFormState) -> RentalFormState) {
 			formState.value = transform(formState.value).copy(fieldErrors = emptyMap())
 		}
 
-		/** Remet le formulaire à zéro (bouton Annuler et envoi réussi). */
+		/** Resets the form (Cancel button and successful submission). */
 		fun reset() {
 			formState.value = RentalFormState()
 		}
 
 		/**
-		 * Valide le formulaire puis envoie le contrat au serveur.
+		 * Validates the form and then submits the contract to the server.
 		 *
-		 * Si la validation échoue, [RentalFormState.fieldErrors] est rempli et rien n'est
-		 * envoyé. Sinon l'UI bascule en [RentalFormState.isSubmitting] le temps de la réponse,
-		 * puis un [RentalFeedback] est émis.
+		 * If validation fails, [RentalFormState.fieldErrors] is filled and nothing is
+		 * sent. Otherwise the UI switches to [RentalFormState.isSubmitting] while waiting
+		 * for the response, then a [RentalFeedback] is emitted.
 		 */
 		fun submit() {
 			val current = formState.value
@@ -141,7 +141,7 @@ class MainViewModel
 				return
 			}
 
-			// La validation garantit que la conversion des champs aboutit.
+			// Validation guarantees that converting the fields succeeds.
 			val contract = buildContract(current) ?: return
 
 			formState.value = current.copy(fieldErrors = emptyMap(), isSubmitting = true)
@@ -162,10 +162,10 @@ class MainViewModel
 		}
 
 		/**
-		 * Valide tous les champs du formulaire.
+		 * Validates every form field.
 		 *
-		 * @param form État courant du formulaire.
-		 * @return Les erreurs par champ, vide si le formulaire est valide.
+		 * @param form Current form state.
+		 * @return The errors per field, empty if the form is valid.
 		 */
 		private fun validate(form: RentalFormState): Map<RentalField, Int> {
 			val errors = mutableMapOf<RentalField, Int>()
@@ -239,10 +239,10 @@ class MainViewModel
 		}
 
 		/**
-		 * Convertit l'état (textes) en [RentalContract].
+		 * Converts the state (texts) into a [RentalContract].
 		 *
-		 * @param form État du formulaire, supposé déjà validé.
-		 * @return Le contrat, ou `null` si un champ numérique est illisible.
+		 * @param form Form state, assumed to be already validated.
+		 * @return The contract, or `null` if a numeric field cannot be parsed.
 		 */
 		private fun buildContract(form: RentalFormState): RentalContract? {
 			val weightKg = RentalLimits.parseDecimalOrNull(form.weightKg) ?: return null
@@ -267,11 +267,13 @@ class MainViewModel
 	}
 
 /**
- * Convertit une erreur d'envoi en message utilisateur.
+ * Converts a submission error into a user-facing message.
  *
- * @return Le [RentalFeedback] correspondant à cette erreur.
+ * Shared with `SettingsViewModel`, which reports the outcome of the connection test.
+ *
+ * @return The [RentalFeedback] corresponding to this error.
  */
-private fun Throwable.toFeedback(): RentalFeedback = when (this) {
+internal fun Throwable.toFeedback(): RentalFeedback = when (this) {
 	is RentalApiException.InvalidUrl -> RentalFeedback.Failure(R.string.error_invalid_url)
 	is RentalApiException.Unreachable -> RentalFeedback.Failure(R.string.error_server_unreachable)
 	is RentalApiException.HttpError -> RentalFeedback.Failure(R.string.error_server_response, statusCode)

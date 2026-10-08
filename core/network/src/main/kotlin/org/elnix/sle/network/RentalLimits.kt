@@ -1,70 +1,70 @@
 package org.elnix.sle.network
 
 /**
- * Bornes et motifs de validation d'un [RentalContract].
+ * Validation bounds and patterns for a [RentalContract].
  *
- * Ces constantes sont la référence côté Android : elles doivent rester alignées sur les
- * contraintes Pydantic du serveur (`SLE-server/src/sle_server/models.py`), sinon le
- * serveur répondra un `422` alors que le formulaire a accepté la saisie.
+ * These constants are the reference on the Android side: they must stay aligned with the
+ * server's Pydantic constraints (`SLE-server/src/sle_server/models.py`), otherwise the
+ * server will return a `422` even though the form accepted the input.
  *
- * Voir `SLE-server/docs/api-contract.md`.
+ * See `SLE-server/docs/api-contract.md`.
  */
 object RentalLimits {
-	/** Longueur minimale des noms (loueur et client). */
+	/** Minimum name length (lessor and customer). */
 	const val NAME_MIN_LENGTH: Int = 1
 
-	/** Longueur maximale des noms (loueur et client). */
+	/** Maximum name length (lessor and customer). */
 	const val NAME_MAX_LENGTH: Int = 120
 
-	/** Motif d'un e-mail, identique à celui du serveur. */
+	/** E-mail pattern, identical to the server's. */
 	val EMAIL_PATTERN: Regex = Regex("^[^@\\s]+@[^@\\s]+\\.[^@\\s]{2,}$")
 
-	/** Motif d'un numéro de téléphone, identique à celui du serveur. */
+	/** Phone number pattern, identical to the server's. */
 	val PHONE_PATTERN: Regex = Regex("^\\+?[0-9][0-9 .()-]{5,24}$")
 
-	/** Poids minimal accepté, en kg. */
+	/** Minimum accepted weight, in kg. */
 	const val WEIGHT_MIN_KG: Double = 10.0
 
-	/** Poids maximal accepté, en kg. */
+	/** Maximum accepted weight, in kg. */
 	const val WEIGHT_MAX_KG: Double = 300.0
 
-	/** Âge minimal accepté, en années. */
+	/** Minimum accepted age, in years. */
 	const val AGE_MIN: Int = 3
 
-	/** Âge maximal accepté, en années. */
+	/** Maximum accepted age, in years. */
 	const val AGE_MAX: Int = 120
 
-	/** Longueur de ski minimale, en cm. */
+	/** Minimum ski length, in cm. */
 	const val SKI_LENGTH_MIN_CM: Int = 60
 
-	/** Longueur de ski maximale, en cm. */
+	/** Maximum ski length, in cm. */
 	const val SKI_LENGTH_MAX_CM: Int = 240
 
-	/** Réglage DIN minimal. */
+	/** Minimum DIN setting. */
 	const val DIN_MIN: Double = 0.5
 
-	/** Réglage DIN maximal. */
+	/** Maximum DIN setting. */
 	const val DIN_MAX: Double = 22.0
 
-	/** Pointure minimale de chaussure de ski. */
+	/** Minimum ski boot size. */
 	const val BOOT_SIZE_MIN: Int = 15
 
-	/** Pointure maximale de chaussure de ski. */
+	/** Maximum ski boot size. */
 	const val BOOT_SIZE_MAX: Int = 50
 
 	/**
-	 * Analyse un nombre décimal en acceptant la virgule française (saisie « 72,5 »).
+	 * Parses a decimal number, accepting the French decimal comma (input "72,5").
 	 *
-	 * @param input Texte saisi par l'utilisateur.
-	 * @return La valeur, ou `null` si le texte n'est pas un nombre.
+	 * @param input Text entered by the user.
+	 * @return The value, or `null` if the text is not a number.
 	 */
 	fun parseDecimalOrNull(input: String): Double? = input.trim().replace(',', '.').toDoubleOrNull()
 
 	/**
-	 * Analyse un entier.
+	 * Parses an integer.
 	 *
-	 * @param input Texte saisi par l'utilisateur.
-	 * @return La valeur, ou `null` si le texte n'est pas un entier.
+	 * @param input Text entered by the user.
+	 * @return The value, or `null` if the text is not an integer.
 	 */
 	fun parseIntOrNull(input: String): Int? = input.trim().toIntOrNull()
 }

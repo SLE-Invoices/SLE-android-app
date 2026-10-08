@@ -1,55 +1,55 @@
 package org.elnix.sle.network
 
 /**
- * Erreurs levées par [RentalApi].
+ * Errors thrown by [RentalApi].
  *
- * Chaque sous-classe correspond à un message utilisateur différent (voir
- * `R.string.error_*` dans `:core:i18n`).
+ * Each subclass corresponds to a different user-facing message (see
+ * `R.string.error_*` in `:core:i18n`).
  */
 sealed class RentalApiException(
 	message: String,
 	cause: Throwable? = null
 ) : Exception(message, cause) {
 	/**
-	 * L'URL configurée dans les réglages n'est pas une URL HTTP valide.
+	 * The URL configured in the settings is not a valid HTTP URL.
 	 *
-	 * @property url URL fautive, à afficher au manager pour corriger les réglages.
+	 * @property url The offending URL, to show to the manager so the settings can be fixed.
 	 */
 	class InvalidUrl(
 		val url: String
 	) : RentalApiException("Invalid server URL: $url")
 
 	/**
-	 * Le serveur n'a pas répondu (éteint, hors réseau, délai dépassé...).
+	 * The server did not respond (powered off, off the network, timeout exceeded...).
 	 *
-	 * @property cause Erreur d'entrée/sortie d'OkHttp.
+	 * @property cause The OkHttp I/O error.
 	 */
 	class Unreachable(
 		cause: Throwable
 	) : RentalApiException("Server unreachable", cause)
 
 	/**
-	 * Le serveur a répondu avec un code HTTP d'erreur (4xx/5xx).
+	 * The server responded with an HTTP error code (4xx/5xx).
 	 *
-	 * @property statusCode Code HTTP retourné par le serveur.
+	 * @property statusCode The HTTP code returned by the server.
 	 */
 	class HttpError(
 		val statusCode: Int
 	) : RentalApiException("Server answered with HTTP $statusCode")
 
 	/**
-	 * La réponse du serveur n'est pas le JSON attendu.
+	 * The server response is not the expected JSON.
 	 *
-	 * @property cause Cause de l'échec de décodage, si connue.
+	 * @property cause The cause of the decoding failure, if known.
 	 */
 	class InvalidResponse(
 		cause: Throwable? = null
 	) : RentalApiException("Invalid server response", cause)
 
 	/**
-	 * Le contrat n'a pas pu être encodé en JSON.
+	 * The contract could not be encoded as JSON.
 	 *
-	 * @property cause Cause de l'échec d'encodage, si connue.
+	 * @property cause The cause of the encoding failure, if known.
 	 */
 	class EncodingError(
 		cause: Throwable? = null
