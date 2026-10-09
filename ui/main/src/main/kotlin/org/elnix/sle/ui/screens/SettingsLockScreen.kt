@@ -24,12 +24,12 @@ import org.elnix.sle.i18n.R
 private const val MANAGER_PIN = "1234"
 
 /**
- * Écran de verrouillage des réglages : demande le PIN du manager avant de laisser
- * accéder à [SettingsScreen] (bibliothèque `compose-lock`).
+ * Settings lock screen: asks for the manager PIN before allowing access to
+ * [SettingsScreen] (via the `compose-lock` library).
  *
- * @param onUnlocked Appelé quand le PIN est correct.
- * @param onBack Appelé quand l'utilisateur revient en arrière (ferme les réglages).
- * @param modifier Modificateur de l'écran.
+ * @param onUnlocked Called when the PIN is correct.
+ * @param onBack Called when the user goes back (closes the settings).
+ * @param modifier Screen modifier.
  */
 @Composable
 fun SettingsLockScreen(
