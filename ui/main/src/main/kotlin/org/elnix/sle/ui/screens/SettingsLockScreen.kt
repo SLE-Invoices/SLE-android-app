@@ -52,18 +52,6 @@ fun SettingsLockScreen(
 			horizontalAlignment = Alignment.CenterHorizontally,
 			verticalArrangement = Arrangement.spacedBy(8.dp)
 		) {
-			Text(
-				text = stringResource(R.string.settings_locked),
-				style = MaterialTheme.typography.headlineSmall,
-				color = MaterialTheme.colorScheme.onBackground
-			)
-
-			Text(
-				text = stringResource(R.string.settings_locked_desc),
-				style = MaterialTheme.typography.bodyMedium,
-				color = MaterialTheme.colorScheme.onSurfaceVariant
-			)
-
 			if (showError) {
 				Text(
 					text = stringResource(R.string.wrong_pin),

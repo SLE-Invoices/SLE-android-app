@@ -26,8 +26,8 @@ import org.elnix.sle.ui.base.Navigator
 import org.elnix.sle.ui.base.animation.horizontalMetadata
 import org.elnix.sle.ui.base.animation.verticalMetadata
 import org.elnix.sle.ui.base.compositionlocals.LocalNavigator
+import org.elnix.sle.ui.components.PinPrompt
 import org.elnix.sle.ui.screens.MainScreen
-import org.elnix.sle.ui.screens.SettingsLockScreen
 import org.elnix.sle.ui.screens.SettingsScreen
 
 @SuppressLint("LocalContextGetResourceValueCall")
@@ -98,9 +98,9 @@ fun MainAppUi() {
 							if (settingsUnlocked) {
 								SettingsScreen()
 							} else {
-								SettingsLockScreen(
-									onUnlocked = { settingsUnlocked = true },
-									onBack = { navigator.onBack() }
+								PinPrompt(
+									onSuccess = { settingsUnlocked = true },
+									onDismiss = { navigator.onBack() }
 								)
 							}
 						}
